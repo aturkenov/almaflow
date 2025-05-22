@@ -72,7 +72,7 @@ testing = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "almanet", specifier = "==1.1.1" }]
+requires-dist = [{ name = "almanet", specifier = "==1.2.1" }]
 
 [package.metadata.requires-dev]
 testing = [
@@ -83,15 +83,15 @@ testing = [
 
 [[package]]
 name = "almanet"
-version = "1.1.1"
+version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansq" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/bd/cc3f68c5c4123ca8fb194592dacb07449e062da2eed0a622e9327f7ab322/almanet-1.1.1.tar.gz", hash = "sha256:ce273c342c04f1415534b497a9184d60abd247fc805956b65f28f58fc204e9e1", size = 12452 }
+sdist = { url = "https://files.pythonhosted.org/packages/42/1e/cbfc575dd8eddbe8207e9dba1264a71b18f0deda44e3ce440c03ae5b36b0/almanet-1.2.1.tar.gz", hash = "sha256:d51fd0b18d1a4305b194f037aa85b97d4580f12ce2a1a211b9aeb79185f005aa", size = 12760 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ea/df/c33b17b3343d540fb5df62bcdc63655e8e5f02a653559e2b8725639c61e6/almanet-1.1.1-py3-none-any.whl", hash = "sha256:cbcf861cff01b4784535fc0343b5611f77096e2ee5a38b9c5c3f8893270e9478", size = 16117 },
+    { url = "https://files.pythonhosted.org/packages/da/ad/c551c023b49496cba7937a69730a869d4c296491e38786562e423778fd26/almanet-1.2.1-py3-none-any.whl", hash = "sha256:785ac40e0e14427ed7342f9640d5f69453855b82f8b991d34c951f7ba5253bee", size = 16356 },
 ]
 
 [[package]]

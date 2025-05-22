@@ -44,7 +44,7 @@ class transition_model[I: type[_state.observable_state], O: type[_state.observab
         session: almanet.Almanet,
     ) -> O:
         result = await self.procedure(payload, session=session, transition=self)
-        session.call(self.target._uri_, result)
+        session.delay_call(self.target._uri_, result, 0)
         return result
 
     async def _local_execution(

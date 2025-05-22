@@ -53,4 +53,4 @@ async def test_simple():
     )
     await _ready_to_exit.wait()
     os.kill(os.getpid(), signal.SIGINT)
-    await asyncio.sleep(61)
+    await asyncio.sleep(1)
