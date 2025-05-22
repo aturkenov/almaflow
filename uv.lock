@@ -64,7 +64,7 @@ dependencies = [
     { name = "almanet" },
 ]
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 testing = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -72,14 +72,13 @@ testing = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "almanet", specifier = "==1.2.1" }]
-
-[package.metadata.requires-dev]
-testing = [
-    { name = "pytest", specifier = ">=8.3.5" },
-    { name = "pytest-asyncio", specifier = ">=0.26.0" },
-    { name = "pytest-cov", specifier = ">=6.1.1" },
+requires-dist = [
+    { name = "almanet", specifier = "==1.2.1" },
+    { name = "pytest", marker = "extra == 'testing'", specifier = ">=8.3.5" },
+    { name = "pytest-asyncio", marker = "extra == 'testing'", specifier = ">=0.26.0" },
+    { name = "pytest-cov", marker = "extra == 'testing'", specifier = ">=6.1.1" },
 ]
+provides-extras = ["testing"]
 
 [[package]]
 name = "almanet"
