@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 
-class _transition_procedure[I, O]:
+class _transition_procedure[I, O](typing.Protocol):
     __name__: str
 
     async def __call__(
@@ -22,14 +22,14 @@ class _transition_procedure[I, O]:
         *,
         session: almanet.Almanet,
         transition: "transition_model",
-    ) -> O: ...
+    ) -> O | None: ...
 
 
 @almanet.shared.dataclass
-class transition_model[I: type[_state.observable_state], O: type[_state.observable_state]]:
+class transition_model[I, O: _state.observable_state]:
     label: str
-    source: I
-    target: O
+    source: type[I]
+    target: type[O]
     procedure: _transition_procedure[I, O]
     description: str | None = None
     is_observer: bool = False
@@ -44,8 +44,10 @@ class transition_model[I: type[_state.observable_state], O: type[_state.observab
         session: almanet.Almanet,
     ) -> O:
         result = await self.procedure(payload, session=session, transition=self)
+        if result is None:
+            result = payload
         session.delay_call(self.target._uri_, result, 0)
-        return result
+        return result  # type: ignore[return-value]
 
     async def _local_execution(
         self,
@@ -54,21 +56,21 @@ class transition_model[I: type[_state.observable_state], O: type[_state.observab
         session = almanet.get_active_session()
         return await self._remote_execution(payload, session=session)
 
-    def __call__(
+    async def __call__(
         self,
         payload: I,
-    ) -> typing.Awaitable[O]:
-        return self._local_execution(payload)
+    ) -> O:
+        return await self._local_execution(payload)
 
 
-def make_transition(
-    source: type[_state.observable_state],
-    target: type[_state.observable_state],
+def make_transition[I, O: _state.observable_state](
+    source: type[I],
+    target: type[O],
     procedure: _transition_procedure,
     label: str | None = None,
     description: str | None = None,
     **extra,
-) -> transition_model:
+) -> transition_model[I, O]:
     if not callable(procedure):
         raise ValueError("decorated function must be callable")
 
@@ -77,9 +79,6 @@ def make_transition(
 
     if description is None:
         description = procedure.__doc__
-
-    if not issubclass(source, _state.observable_state):
-        raise ValueError(f"{label}: `source` must be subclass of `observable_state`")
 
     if not issubclass(target, _state.observable_state):
         raise ValueError(f"{label}: `target` must be subclass of `observable_state`")
@@ -94,27 +93,32 @@ def make_transition(
     )
 
 
-def transition(
-    *args,
+def transition[I, O: _state.observable_state](
+    source: type[I],
+    target: type[O],
     **extra,
-):
+) -> typing.Callable[[_transition_procedure[I, O]], transition_model[I, O]]:
     def wrap(function):
-        return make_transition(*args, procedure=function, **extra)
+        return make_transition(source, target, procedure=function, **extra)
 
     return wrap
 
 
-def make_observer(
+def make_observer[I: _state.observable_state, O: _state.observable_state](
     service: almanet.remote_service,
-    source: type[_state.observable_state],
-    target: type[_state.observable_state],
+    source: type[I],
+    target: type[O],
     **extra,
-) -> transition_model:
+) -> transition_model[I, O]:
     instance = make_transition(
         source,
         target,
         **extra,
     )
+
+    if not issubclass(source, _state.observable_state):
+        raise ValueError(f"{instance.label}: `source` must be subclass of `observable_state`")
+
     service.add_procedure(
         instance._remote_execution,
         uri=source._uri_,
@@ -126,13 +130,17 @@ def make_observer(
     return instance
 
 
-def observe(
-    *args,
+def observe[I: _state.observable_state, O: _state.observable_state](
+    service: almanet.remote_service,
+    source: type[I],
+    target: type[O],
     **extra,
-):
+) -> typing.Callable[[_transition_procedure[I, O]], transition_model[I, O]]:
     def wrap(function):
         return make_observer(
-            *args,
+            service,
+            source=source,
+            target=target,
             procedure=function,
             is_observer=True,
             **extra,

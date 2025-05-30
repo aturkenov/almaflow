@@ -10,16 +10,32 @@ from testing import public
 testing_service = almanet.remote_service("net.testing.microservice")
 
 
+def log_state(state: almaflow.observable_state):
+    almanet.logger.debug(f'{state._uri_}: {state.model_dump_json()}')
+
+
 @almaflow.transition(
+    str,
+    public.new_state,
+)
+async def create(
+    payload: str,
+    **kwargs,
+):
+    return public.new_state(foo=payload)
+
+
+@almaflow.observe(
+    testing_service,
     public.new_state,
     public.ready_state,
 )
 async def make_ready(
-    payload,
+    payload: public.new_state,
     **kwargs,
 ):
-    almanet.logger.debug(f'{payload._uri_} {payload}')
-    return public.ready_state()
+    log_state(payload)
+    payload.foo = f"{payload.foo} is ready"
 
 
 _ready_to_exit = asyncio.Event()
@@ -30,19 +46,17 @@ _ready_to_exit = asyncio.Event()
     public.done_state,
 )
 async def _on_ready(
-    payload,
+    payload: public.ready_state,
     **kwargs,
 ):
-    almanet.logger.debug(f'{payload._uri_} {payload}')
+    log_state(payload)
     _ready_to_exit.set()
-    return public.done_state()
 
 
 @testing_service.post_join
 async def __post_join(session: almanet.Almanet):
-    new_state = public.new_state()
-    ready_state = await make_ready(new_state)
-    almanet.logger.debug(f'{ready_state=}')
+    new_state = await create("test")
+    log_state(new_state)
 
 
 async def test_simple():

@@ -1,15 +1,11 @@
-from dataclasses import dataclass
-
 import almaflow
 
 
-@dataclass
-class new_state(almaflow.observable_state): ...
+class new_state(almaflow.observable_state):
+    foo: str
 
 
-@dataclass
-class ready_state(almaflow.observable_state): ...
+class ready_state(new_state): ...
 
 
-@dataclass
-class done_state(almaflow.observable_state): ...
+class done_state(ready_state): ...
