@@ -47,8 +47,8 @@ async def __post_join(session: almanet.Almanet):
 
 async def test_simple():
     almanet.serve_single(
-        testing_service,
         almanet.clients.ansqd_tcp_client("localhost:4150"),
+        testing_service,
         stop_loop_on_exit=False,
     )
     await _ready_to_exit.wait()

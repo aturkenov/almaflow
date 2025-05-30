@@ -74,7 +74,7 @@ wheels = [
 
 [[package]]
 name = "almaflow"
-version = "0.1.0"
+version = "0.1.2"
 source = { virtual = "." }
 dependencies = [
     { name = "almanet" },
@@ -89,7 +89,7 @@ testing = [
 
 [package.metadata]
 requires-dist = [
-    { name = "almanet", specifier = "==1.2.1" },
+    { name = "almanet", specifier = ">=1.2.2" },
     { name = "pytest", marker = "extra == 'testing'", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", marker = "extra == 'testing'", specifier = ">=0.26.0" },
     { name = "pytest-cov", marker = "extra == 'testing'", specifier = ">=6.1.1" },
@@ -98,15 +98,15 @@ provides-extras = ["testing"]
 
 [[package]]
 name = "almanet"
-version = "1.2.1"
+version = "1.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansq" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/42/1e/cbfc575dd8eddbe8207e9dba1264a71b18f0deda44e3ce440c03ae5b36b0/almanet-1.2.1.tar.gz", hash = "sha256:d51fd0b18d1a4305b194f037aa85b97d4580f12ce2a1a211b9aeb79185f005aa", size = 12760 }
+sdist = { url = "https://files.pythonhosted.org/packages/24/8c/8072045f4f1d117af3a380c1aec3868d7e6f3c490c86551a8c3625c19bd2/almanet-1.2.2.tar.gz", hash = "sha256:b2adfc68e515ff791319a324a93928110442315252aba28095b733cb33d6eecf", size = 12784 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/ad/c551c023b49496cba7937a69730a869d4c296491e38786562e423778fd26/almanet-1.2.1-py3-none-any.whl", hash = "sha256:785ac40e0e14427ed7342f9640d5f69453855b82f8b991d34c951f7ba5253bee", size = 16356 },
+    { url = "https://files.pythonhosted.org/packages/ca/4d/fd569d8c4c046fb8fc04546e5bb05a2531e82d1f5126eae7f52421096a29/almanet-1.2.2-py3-none-any.whl", hash = "sha256:c85ce5d9cca68a06cc37e8772671faa389f24da02bce5af7209b859a924fd2ea", size = 16355 },
 ]
 
 [[package]]
