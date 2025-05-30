@@ -1,13 +1,13 @@
 [project]
 name = "almaflow"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = [
     { name = "aturkenov" }
 ]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "almanet==1.2.1",
 ]
