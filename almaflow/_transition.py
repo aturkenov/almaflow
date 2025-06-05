@@ -41,6 +41,7 @@ class transition_model[I, O: _state.observable_state]:
     async def _remote_execution(
         self,
         payload: I,
+        *,
         session: almanet.Almanet,
     ) -> O:
         result = await self.procedure(payload, session=session, transition=self)
