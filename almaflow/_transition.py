@@ -124,7 +124,6 @@ def make_observer[I: _state.observable_state, O: _state.observable_state](
         uri=source._uri_,
         payload_model=source,
         return_model=target,
-        validate=True,
         include_to_api=False,
     )
     return instance
