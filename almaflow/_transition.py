@@ -45,7 +45,8 @@ class transition_model[I, O: _state.observable_state]:
         session: almanet.Almanet,
         **kwargs,
     ) -> O:
-        result = await self.procedure(payload, *args, **kwargs, session=session, transition=self)
+        kwargs["transition"] = self
+        result = await self.procedure(payload, *args, **kwargs, session=session)
         if result is None:
             result = payload
         session.delay_call(self.target._uri_, result, 0)
@@ -57,8 +58,8 @@ class transition_model[I, O: _state.observable_state]:
         *args,
         **kwargs,
     ) -> O:
-        session = almanet.get_active_session()
-        return await self._remote_execution(payload, *args, **kwargs, session=session)
+        kwargs["session"] = almanet.get_active_session()
+        return await self._remote_execution(payload, *args, **kwargs)
 
     async def __call__(
         self,
