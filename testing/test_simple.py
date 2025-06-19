@@ -36,6 +36,7 @@ async def make_ready(
 ):
     log_state(payload)
     payload.foo = f"{payload.foo} is ready"
+    payload._next_delay_seconds_ = 3
 
 
 _ready_to_exit = asyncio.Event()

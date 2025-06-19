@@ -9,6 +9,7 @@ __all__ = [
 
 class observable_state(pydantic.BaseModel):
     _uri_: typing.ClassVar[str]
+    _next_delay_seconds_: int = 0
 
     def __init_subclass__(klass) -> None:
         klass._uri_ = f"{klass.__module__}.{klass.__name__}"

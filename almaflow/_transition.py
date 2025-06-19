@@ -48,9 +48,9 @@ class transition_model[I, O: _state.observable_state]:
         kwargs["transition"] = self
         result = await self.procedure(payload, *args, **kwargs, session=session)
         if result is None:
-            result = payload
-        session.delay_call(self.target._uri_, result, 0)
-        return result  # type: ignore[return-value]
+            result = typing.cast(O, payload)
+        session.delay_call(self.target._uri_, result, result._next_delay_seconds_)
+        return result
 
     async def _local_execution(
         self,
