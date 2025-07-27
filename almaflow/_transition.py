@@ -49,7 +49,7 @@ class transition_model[I, O: _state.observable_state]:
         result = await self.procedure(payload, *args, **kwargs, session=session)
         if result is None:
             result = typing.cast(O, payload)
-        session.delay_call(self.target._uri_, result, result._next_delay_seconds_)
+        await session.delay_call(self.target._uri_, result, result._next_delay_seconds_)
         return result
 
     async def _local_execution(
