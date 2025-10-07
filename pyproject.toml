@@ -1,6 +1,6 @@
 [project]
 name = "almaflow"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = [
     { name = "aturkenov" }
@@ -9,7 +9,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
-    "almanet==1.3.0",
+    "almanet>=1.3.2",
 ]
 
 [project.optional-dependencies]
